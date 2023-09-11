@@ -18,7 +18,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { IMAGE_CATEGORIES } from '../constants/Constants';
+import { IMAGE_CATEGORIES } from '../../constants/Constants';
 import styles from './styles';
 
 const client = createClient(Config.PEXELS_API_KEY);
