@@ -35,7 +35,7 @@ const CategoryView = props => {
     const { photos } = await client.photos.search({
       query,
       per_page: 5,
-      page: page_no,
+      page: 1,
     });
     if (photos && photos.length > 0) {
       setCarouselItems(photos);
