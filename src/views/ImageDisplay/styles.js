@@ -18,6 +18,14 @@ const styles = StyleSheet.create({
     width: 50,
   },
 
+  bottomLGStyle: {
+    alignItems: 'center',
+    height: '100%',
+    padding: 16,
+    paddingBottom: 8,
+    width: '100%',
+  },
+
   container: {
     alignItems: 'center',
     backgroundColor: '#222222',
@@ -33,9 +41,8 @@ const styles = StyleSheet.create({
   },
 
   downloadTouchableContainerStyle: {
-    alignItems: 'center',
-    height: '80%',
-    justifyContent: 'center',
+    bottom: 0,
+    position: 'absolute',
     width: '100%',
   },
 

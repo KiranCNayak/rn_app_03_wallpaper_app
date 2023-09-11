@@ -10,6 +10,7 @@ import {
 
 import { createClient } from 'pexels';
 import Config from 'react-native-config';
+import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
@@ -43,6 +44,30 @@ const ImageDisplay = props => {
     setActivityIndicator(status);
   };
 
+  const renderDownloadTouchableComponent = (
+    <View style={styles.downloadTouchableContainerStyle}>
+      <LinearGradient
+        colors={['transparent', '#0009', '#000']}
+        style={styles.bottomLGStyle}>
+        <TouchableOpacity
+          // TODO: onPress={Handle Download Image}
+          style={styles.downloadTouchableStyle}>
+          <Icon color="#000" name="download" size={32} />
+        </TouchableOpacity>
+      </LinearGradient>
+    </View>
+  );
+
+  const renderBackButtonTouchableComponent = (
+    <View style={styles.backButtonTouchableContainerStyle}>
+      <TouchableOpacity
+        onPress={onBackTouchablePress}
+        style={styles.backButtonTouchableStyle}>
+        <Icon color="#FFF" name="chevron-left" size={18} />
+      </TouchableOpacity>
+    </View>
+  );
+
   const renderDownloadedImageComponent = (
     <ImageBackground
       imageStyle={{ resizeMode: 'contain' }}
@@ -60,20 +85,8 @@ const ImageDisplay = props => {
           right: 0.45 * width,
         }}
       />
-      <View>
-        <TouchableOpacity
-          onPress={onBackTouchablePress}
-          style={styles.backButtonTouchableStyle}>
-          <Icon color="#FFF" name="chevron-left" size={18} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.downloadTouchableContainerStyle}>
-        <TouchableOpacity
-          // TODO: onPress={Handle Download Image}
-          style={styles.downloadTouchableStyle}>
-          <Icon color="#000" name="download" size={32} />
-        </TouchableOpacity>
-      </View>
+      {renderBackButtonTouchableComponent}
+      {renderDownloadTouchableComponent}
     </ImageBackground>
   );
 
