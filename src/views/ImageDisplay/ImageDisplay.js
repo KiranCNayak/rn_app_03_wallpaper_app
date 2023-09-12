@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   ImageBackground,
+  PermissionsAndroid,
   Text,
   TouchableOpacity,
   useWindowDimensions,
@@ -12,8 +14,10 @@ import { createClient } from 'pexels';
 import Config from 'react-native-config';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import styles from './styles';
+import { get_YYYYMMDD_HHMMSS_String } from '../../utils/utils';
 
 const client = createClient(Config.PEXELS_API_KEY);
 
@@ -38,7 +42,96 @@ const ImageDisplay = props => {
     loadImage();
   }, []);
 
+  const getStringAfterLastPeriodChar = filename => {
+    return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
+  };
+
+  const downloadImage = () => {
+    let ext = getStringAfterLastPeriodChar(imageUri);
+    ext = '.' + ext[0];
+
+    // If there is query parameter at the end, we need to ignore it
+    //  so we use the first string of such split, that doesn't have
+    //  the query parameter values.
+    ext = ext.split('?')[0];
+
+    const { config, fs } = RNFetchBlob;
+    const PictureDir = fs.dirs.PictureDir;
+
+    const options = {
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        path:
+          PictureDir +
+          '/WallpaperAppKCN_' +
+          get_YYYYMMDD_HHMMSS_String(new Date()) +
+          ext,
+        description: 'Image',
+      },
+    };
+
+    config(options)
+      .fetch('GET', imageUri)
+      .then(({ data }) => {
+        Alert.alert(
+          'Image downloaded successfully !',
+          'Image is located at ' + data,
+        );
+      })
+      .catch(_error => {
+        Alert.alert(
+          "Couldn't Download this image",
+          'Please try again.\nHave you given the storage permission ?',
+        );
+      });
+  };
+
+  const isStoragePermissionGrantedAlready = cb => {
+    PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    ).then(cb);
+  };
+
+  const requestStoragePermissionWithRationale = async () => {
+    try {
+      const permissionRationale = {
+        title: 'Permission to save image to your Device',
+        message:
+          'Wallpaper App needs access to your storage ' +
+          'so you can dowload awesome wallpapers',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      };
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        permissionRationale,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        downloadImage();
+      } else {
+        Alert.alert(
+          'Storage permission is required',
+          "Please try again. If you are not able to proceed further, Go to your device Settings > Apps > Wallpaper App by KCN > App permissions > Files and media > 'Click on Allow'",
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const onBackTouchablePress = () => props.navigation.goBack();
+
+  const onDownloadTouchablePress = () => {
+    isStoragePermissionGrantedAlready(status => {
+      if (status) {
+        downloadImage();
+      } else {
+        requestStoragePermissionWithRationale();
+      }
+    });
+  };
 
   const setActivityIndicatorStatus = status => () => {
     setActivityIndicator(status);
@@ -50,7 +143,7 @@ const ImageDisplay = props => {
         colors={['transparent', '#0009', '#000']}
         style={styles.bottomLGStyle}>
         <TouchableOpacity
-          // TODO: onPress={Handle Download Image}
+          onPress={onDownloadTouchablePress}
           style={styles.downloadTouchableStyle}>
           <Icon color="#000" name="download" size={32} />
         </TouchableOpacity>
