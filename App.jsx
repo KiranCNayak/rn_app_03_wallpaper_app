@@ -27,7 +27,7 @@ function App() {
         />
         <Stack.Screen
           component={CategoryView}
-          name="FullCategory"
+          name="CategoryView"
           options={{
             headerShown: false,
           }}

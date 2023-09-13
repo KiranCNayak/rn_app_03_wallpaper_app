@@ -19,6 +19,7 @@ import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { IMAGE_CATEGORIES } from '../../constants/Constants';
+import { IMAGES } from '../../data/IMAGES';
 import styles from './styles';
 
 const client = createClient(Config.PEXELS_API_KEY);
@@ -32,25 +33,25 @@ const HomeView = props => {
   // Animating the top search and text container
   const x = new Animated.Value(-100);
 
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const categoriesKE = ({ id }) => id;
 
   const findImages = () => {
     const query = 'Landscapes';
-    client.photos.search({ query, per_page: 2 }).then(({ photos }) => {
+    client.photos.search({ query, per_page: 5 }).then(({ photos }) => {
       setCarouselItems(photos);
     });
   };
 
   const onCategoryImagePress = item => () => {
-    props.navigation.navigate('FullCategory', {
+    props.navigation.navigate('CategoryView', {
       query: item.title,
     });
   };
 
   const onSearchButtonPress = () => {
-    props.navigation.navigate('FullCategory', {
+    props.navigation.navigate('CategoryView', {
       query: searchQuery,
     });
   };
@@ -114,9 +115,7 @@ const HomeView = props => {
   const renderSearchAndImgBGView = () => {
     return (
       <ImageBackground
-        source={{
-          uri: 'https://cdn.dribbble.com/users/1325237/screenshots/12008929/media/fd36b900a9e355bfee1e8585f6052ed8.png',
-        }}
+        source={IMAGES.IMG_ILLUSTRATION}
         style={styles.topSearchAndTitleBGContainerStyle}>
         <View style={styles.topSearchAndTitleContainerStyle}>
           <LinearGradient

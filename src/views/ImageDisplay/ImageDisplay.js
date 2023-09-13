@@ -25,6 +25,8 @@ const ImageDisplay = props => {
   const { height, width } = useWindowDimensions();
 
   const [activityIndicator, setActivityIndicator] = useState(true);
+  const [imageBGColor, setImageBGColor] = useState('#222222');
+  const [imageDesc, setImageDesc] = useState('Image from Wallpaper App by KCN');
   const [imageUri, setImageUri] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +35,9 @@ const ImageDisplay = props => {
   const loadImage = () => {
     setIsLoading(true);
     client.photos.show({ id }).then(photo => {
-      setImageUri(photo.src.medium);
+      setImageDesc(photo.alt);
+      setImageBGColor(photo.avg_color);
+      setImageUri(photo.src.original);
       setIsLoading(false);
     });
   };
@@ -68,7 +72,7 @@ const ImageDisplay = props => {
           '/WallpaperAppKCN_' +
           get_YYYYMMDD_HHMMSS_String(new Date()) +
           ext,
-        description: 'Image',
+        description: imageDesc,
       },
     };
 
@@ -184,7 +188,7 @@ const ImageDisplay = props => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: imageBGColor }]}>
       {!(isLoading || imageUri === '') ? (
         renderDownloadedImageComponent
       ) : (
