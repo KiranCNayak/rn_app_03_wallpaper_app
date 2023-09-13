@@ -11,31 +11,31 @@
 
 1. Home page
 
-<img src="./screenshots/First Page (Home page).jpg" height="1600" width="750" />
+<img src="./screenshots/First Page (Home page).jpg" height="600" width="280" />
 
 2. Category page - Items are rendered using a two column FlatList
 
-<img src="./screenshots/Second Page (Category selected).jpg" height="1600" width="750" />
+<img src="./screenshots/Second Page (Category selected).jpg" height="600" width="280" />
 
 3. Image Display page - User can download the image by clicking on the download button
 
-<img src="./screenshots/Third page (On clicking any image).jpg" height="1600" width="750" />
+<img src="./screenshots/Third page (On clicking any image).jpg" height="600" width="280" />
 
 4. Alert on successfully downloading the image
 
-<img src="./screenshots/Success alert on image download.jpg" height="1600" width="750" />
+<img src="./screenshots/Success alert on image download.jpg" height="600" width="280" />
 
 5. Search capability on Home page (Here the user has searched for "Bengaluru")
 
-<img src="./screenshots/Search capability on Home page.jpg" height="1600" width="750" />
+<img src="./screenshots/Search capability on Home page.jpg" height="600" width="280" />
 
 6. Search successfully renders itself as a `Category`
 
-<img src="./screenshots/Search Result.jpg" height="1600" width="750" />
+<img src="./screenshots/Search Result.jpg" height="600" width="280" />
 
 7. Once the user reaches the end of the list, an alert is shown for the same.
 
-<img src="./screenshots/Feedback alert on reaching end of image list.jpg" height="1600" width="750" />
+<img src="./screenshots/Feedback alert on reaching end of image list.jpg" height="600" width="280" />
 
 ---
 
@@ -43,10 +43,10 @@
 
 Without `ProGuard`
 
-<img src="./screenshots/App size without ProGuard.jpg" height="1600" width="750" />
+<img src="./screenshots/App size without ProGuard.jpg" height="600" width="600" />
 
 ---
 
 With `ProGuard`
 
-<img src="./screenshots/App size with ProGuard.jpg" height="1600" width="750" />
+<img src="./screenshots/App size with ProGuard.jpg" height="600" width="600" />
