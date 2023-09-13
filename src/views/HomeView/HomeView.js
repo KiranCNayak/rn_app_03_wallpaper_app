@@ -50,12 +50,6 @@ const HomeView = props => {
     });
   };
 
-  const onSearchButtonPress = () => {
-    props.navigation.navigate('CategoryView', {
-      query: searchQuery,
-    });
-  };
-
   const onTopPicksImagePress = item => () => {
     props.navigation.navigate('ImageDisplay', {
       id: item.id,
@@ -70,6 +64,14 @@ const HomeView = props => {
       toValue: 0,
       useNativeDriver: 'true',
     }).start();
+  };
+
+  const submitQueryHandler = () => {
+    if (searchQuery !== '') {
+      props.navigation.navigate('CategoryView', {
+        query: searchQuery,
+      });
+    }
   };
 
   useEffect(() => {
@@ -141,13 +143,14 @@ const HomeView = props => {
               ]}>
               <TextInput
                 onChangeText={onSearchQueryTextChange}
+                onSubmitEditing={submitQueryHandler}
                 placeholder="Search For Free Wallpapers"
                 placeholderTextColor="gray"
                 style={styles.textInputForSearchStyle}
                 value={searchQuery}
               />
               <TouchableOpacity
-                onPress={onSearchButtonPress}
+                onPress={submitQueryHandler}
                 style={styles.searchIconStyle}>
                 <Icon color="#FFF" name="search" size={15} />
               </TouchableOpacity>
