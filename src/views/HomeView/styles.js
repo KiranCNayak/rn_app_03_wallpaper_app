@@ -70,13 +70,11 @@ const styles = StyleSheet.create({
   searchBoxStyle: {
     alignItems: 'center',
     backgroundColor: '#222222',
-    borderColor: '#333',
     borderRadius: 10,
-    borderWidth: 2,
     flexDirection: 'row',
     height: 48,
     justifyContent: 'space-between',
-    marginBottom: 12,
+    marginBottom: '12%',
     width: '80%',
   },
 
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
   },
 
   topSearchAndTitleBGContainerStyle: {
-    height: 250,
+    height: 350,
   },
 
   topSearchAndTitleContainerStyle: {
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
 
   topTextContainerStyle: {
     alignItems: 'center',
-    height: '40%',
+    height: '60%',
     justifyContent: 'center',
     width: '100%',
   },

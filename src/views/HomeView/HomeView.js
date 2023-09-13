@@ -28,6 +28,7 @@ const HomeView = props => {
   const carouselRef = useRef(null);
 
   const [carouselItems, setCarouselItems] = useState([]);
+  const [isTextInputFocussed, setIsTextInputFocussed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Animating the top search and text container
@@ -49,6 +50,13 @@ const HomeView = props => {
       query: item.title,
     });
   };
+
+  const onTIFocussed = useCallback(
+    isFocussed => () => {
+      setIsTextInputFocussed(isFocussed);
+    },
+    [],
+  );
 
   const onTopPicksImagePress = item => () => {
     props.navigation.navigate('ImageDisplay', {
@@ -139,10 +147,16 @@ const HomeView = props => {
             <Animated.View
               style={[
                 styles.searchBoxStyle,
-                { transform: [{ translateX: x }] },
+                {
+                  borderColor: isTextInputFocussed ? '#df2' : '#ff07',
+                  borderWidth: isTextInputFocussed ? 4 : 2,
+                  transform: [{ translateX: x }],
+                },
               ]}>
               <TextInput
                 onChangeText={onSearchQueryTextChange}
+                onEndEditing={onTIFocussed(false)}
+                onFocus={onTIFocussed(true)}
                 onSubmitEditing={submitQueryHandler}
                 placeholder="Search For Free Wallpapers"
                 placeholderTextColor="gray"
