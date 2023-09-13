@@ -1,4 +1,4 @@
-# Wallpaper app by KCN
+# Wallpaper App by KCN
 
 ### Features included in this app
 
@@ -6,6 +6,8 @@
 - [React Navigation](https://reactnavigation.org/) for in-app navigation
 - [React Native Snap Carousel](https://github.com/meliorence/react-native-snap-carousel/) for image carousel in Home page
 - [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/) is needed by snap carousel for its use
+- [PermissionsAndroid](https://reactnative.dev/docs/permissionsandroid.html) to handle different scenarios of `PERMISSIONS.WRITE_EXTERNAL_STORAGE`. Have added [Rationale options](https://reactnative.dev/docs/permissionsandroid.html#request) to request method, when the user denies permission for the first time.
+- Utilizing memoization techniques using [`useCallback`](https://react.dev/reference/react/useCallback), [`useMemo`](https://react.dev/reference/react/useMemo) and [`React.memo`](https://react.dev/reference/react/memo).
 
 ### Screenshots of the app
 
@@ -33,13 +35,13 @@
 
 <img src="./screenshots/Search Result.jpg" height="600" width="280" />
 
-7. Once the user reaches the end of the list, an alert is shown for the same.
+7. Once the user reaches the end of the list, an alert is shown for the same. The exact line in code can be seen [here](https://github.com/KiranCNayak/rn_app_03_wallpaper_app/blob/main/src/views/CategoryView/CategoryView.js#L45)
 
 <img src="./screenshots/Feedback alert on reaching end of image list.jpg" height="600" width="280" />
 
 ---
 
-### Using `ProGuard` has decreased the App size by more than 7.5MB
+### Using `ProGuard` has decreased the App size by more than 7.5MB. The exact line in code can be seen [here](https://github.com/KiranCNayak/rn_app_03_wallpaper_app/blob/main/android/app/build.gradle#L57)
 
 Without `ProGuard`
 
