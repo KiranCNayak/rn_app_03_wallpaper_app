@@ -38,7 +38,7 @@ const HomeView = props => {
   const categoriesKE = ({ id }) => id;
 
   const findImages = () => {
-    const query = 'Landscapes';
+    const query = 'Mountains';
     client.photos.search({ query, per_page: 5 }).then(({ photos }) => {
       setCarouselItems(photos);
     });

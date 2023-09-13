@@ -1,29 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
-  View,
-  SafeAreaView,
-  Image,
+  Alert,
   FlatList,
-  Text,
-  TouchableOpacity,
   RefreshControl,
-  useWindowDimensions,
+  SafeAreaView,
+  Text,
+  View,
 } from 'react-native';
 
 import { createClient } from 'pexels';
 import Config from 'react-native-config';
 
-import { IMAGES } from '../../data/IMAGES';
+import EmptyDataView from './EmptyDataView';
+import IndividualItem from './IndividualItem';
 import styles from './styles';
 
 const client = createClient(Config.PEXELS_API_KEY);
 
+const PER_PAGE = 10;
+
 const CategoryView = props => {
+  const [canLoadNewData, setCanLoadNewData] = useState(true);
   const [carouselItems, setCarouselItems] = useState([]);
   const [isEmptyData, setIsEmptyData] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const { height } = useWindowDimensions();
+  const [page, setPage] = useState(1);
 
   // In case of a failure to load the query string, default it to 'Food'
   const query = props.route?.params?.query ?? 'Food';
@@ -32,44 +33,50 @@ const CategoryView = props => {
 
   const loadImages = async query => {
     setIsRefreshing(true);
-    const { photos } = await client.photos.search({
+
+    // To stop requesting for images when more data is not available,
+    //  we are using the next_page as a flag. If present, it indicates
+    //  data in the next page, else it won't come in query result at all.
+    const { next_page, photos } = await client.photos.search({
+      page,
+      per_page: PER_PAGE,
       query,
-      per_page: 10,
-      page: 1,
     });
-    if (photos && photos.length > 0) {
-      setCarouselItems(photos);
-      if (isEmptyData) {
-        setIsEmptyData(false);
-      }
+    if (!next_page) {
+      setCanLoadNewData(false);
     } else {
-      setIsEmptyData(true);
+      if (photos && photos.length > 0) {
+        const list = [...carouselItems, ...photos];
+        setCarouselItems(list);
+        if (isEmptyData) {
+          setIsEmptyData(false);
+        }
+      } else {
+        setIsEmptyData(true);
+      }
     }
     setIsRefreshing(false);
   };
 
   useEffect(() => {
     loadImages(query);
-  }, []);
+  }, [page]);
 
-  const onIndividualImagePress = item => () => {
+  const onIndividualImagePress = useCallback(item => {
     props.navigation.navigate('ImageDisplay', {
       id: item.id,
     });
-  };
+  }, []);
 
-  const renderIndividualItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={onIndividualImagePress(item)}
-        style={[styles.imageItemContainerStyle, { height: 0.3 * height }]}>
-        <Image
-          source={{ uri: item.src.medium }}
-          style={styles.imageItemStyle}
-        />
-      </TouchableOpacity>
-    );
-  };
+  const renderIndividualItem = useCallback(
+    ({ item }) => (
+      <IndividualItem
+        item={item}
+        onIndividualImagePress={onIndividualImagePress}
+      />
+    ),
+    [],
+  );
 
   const renderRefreshControlComponent = (
     <RefreshControl
@@ -80,26 +87,9 @@ const CategoryView = props => {
     />
   );
 
-  const EmptyDataView = () => {
-    return (
-      <View style={styles.emptyDataRootContainerStyle}>
-        <Text style={styles.emptyDataTitleStyle}>{`${query}`}</Text>
-        <Text style={styles.notFoundTextStyle}>{'Not found !'}</Text>
-        <Text style={styles.notFoundTextStyle}>
-          {'Try again with different text.'}
-        </Text>
-
-        <Image
-          source={IMAGES.IMG_EMPTY_BOX}
-          style={styles.emptyListImageStyle}
-        />
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.FlatList_Container}>
+      <View style={styles.fullScreenStyle}>
         {!isEmptyData ? (
           <>
             <View style={styles.titleTextContainerStyle}>
@@ -107,13 +97,21 @@ const CategoryView = props => {
             </View>
             <FlatList
               data={carouselItems}
+              onEndReached={() => {
+                if (canLoadNewData) {
+                  setPage(page + 1);
+                } else {
+                  Alert.alert('You have reached the end of the list');
+                }
+              }}
+              numColumns={2}
               refreshControl={renderRefreshControlComponent}
               renderItem={renderIndividualItem}
               ItemSeparatorComponent={separatorComponent}
             />
           </>
         ) : (
-          <EmptyDataView />
+          <EmptyDataView query={query} />
         )}
       </View>
     </SafeAreaView>

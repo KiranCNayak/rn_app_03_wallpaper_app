@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     margin: '50%',
-    shadowColor: '#fff',
+    shadowColor: '#000',
     width: '80%',
   },
 

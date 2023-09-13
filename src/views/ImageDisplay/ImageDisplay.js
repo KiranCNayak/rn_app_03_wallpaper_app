@@ -37,7 +37,7 @@ const ImageDisplay = props => {
     client.photos.show({ id }).then(photo => {
       setImageDesc(photo.alt);
       setImageBGColor(photo.avg_color);
-      setImageUri(photo.src.original);
+      setImageUri(photo.src.large);
       setIsLoading(false);
     });
   };

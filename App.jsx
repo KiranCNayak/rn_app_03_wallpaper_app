@@ -15,8 +15,6 @@ function App() {
         initialRouteName="Home"
         screenOptions={{
           animationEnabled: false,
-          gestureDirection: 'vertical',
-          gestureEnabled: true,
         }}>
         <Stack.Screen
           component={HomeView}

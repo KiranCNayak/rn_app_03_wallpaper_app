@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 
-  FlatList_Container: {
+  fullScreenStyle: {
     height: '100%',
     width: '100%',
   },
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
 
   imageItemStyle: {
-    borderRadius: 15,
+    borderRadius: 16,
     height: '100%',
     width: '95%',
   },
