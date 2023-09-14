@@ -1,5 +1,12 @@
 # Wallpaper App by KCN
 
+### Mockup images
+
+<div style="display: flex;">
+<img src="./screenshots/mockup-image-1.png" height="400" width="400" />
+<img src="./screenshots/mockup-image-2.png" height="400" width="400" />
+</div>
+
 ### Features included in this app
 
 - [Pexels API](https://www.pexels.com/api/) for loading the images.
